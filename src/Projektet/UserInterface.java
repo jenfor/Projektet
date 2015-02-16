@@ -1,9 +1,11 @@
 package Projektet;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -22,13 +24,18 @@ public class UserInterface {
 	    ImageIcon ikon;
 	    private JButton exitButton;
 	    private HashMap<String,JButton> exitButtons = new HashMap<String,JButton>();
-	    //private JPanelWithBackground panel;
+	    private JPanelWithBackground panel;
+	    private Room room;
+	    public PanelSklett invisPanels;
+	    private JPanel invisPanel;
 	
 	
 	public UserInterface(GameEngine gameEngine)
     {
         engine = gameEngine;
         createGUI();
+        room = new Room(engine.getCurrent());
+        invisPanel = new PanelSklett(engine);
     }
 	
 	 public void createGUI()
@@ -42,8 +49,9 @@ public class UserInterface {
 		        JButton button5 = new JButton("Pengar");
 		        JButton button6 = new JButton("Föremål");
 		        JButton button7 = new JButton("Pengar");
-		        File sourceimage = new File("C:/Users/Jenny/Desktop/mittforsok/Jenny/pictures/stig.jpg");
-		        Image image= null;
+		        //image = room.getPicture(current);
+		        File sourceimage = new File("pictures/stig.jpg");//Bilder ska egentligen ligga sparade i rummen 
+		        Image image= null;								// Just nu står det här
 				try {
 					image = ImageIO.read(sourceimage);
 				} catch (IOException e) {
@@ -69,8 +77,8 @@ public class UserInterface {
 		        myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		        
 		        
-		        JPanel panel = new JPanel();
-		        	panel = new JPanelWithBackground(image); 
+		       
+		        panel = new JPanelWithBackground(image); 
 				
 				
 		        
@@ -90,6 +98,7 @@ public class UserInterface {
 		        panel.add(p, BorderLayout.WEST);
 		        panel.add(p2, BorderLayout.EAST);
 		        panel.add(b, BorderLayout.NORTH);
+		       
 		        
 		        panel.setPreferredSize(new Dimension((int)width, (int)height)); //bildstorlek, gör om till att skala
 		        panel.setMinimumSize(new Dimension((int)width, (int)height)); //istället för att skära av
@@ -239,9 +248,35 @@ public class UserInterface {
 		        myFrame.setVisible(true);
 		        entryField.requestFocus();
 		        
-		    }
+		        changeRoom("Center");
 		        
-		
+		    }
+	
+	 
+	 private void reSize(int windowchanges)
+	 {
+		 
+	 }
+		        
+	 
+	 private void setJPanelWithBackground(Image i)
+	 {
+		  image = i;
+		 
 		
 
-	}
+	 }
+	 
+	 private void changeRoom(String current)
+	 {
+		 if(current.equals("Center")) room = invisPanels.center; 
+			if(current.equals("Shop")) room = invisPanels.shop;
+			if(current.equals("Garden")) room = invisPanels.garden;
+			else room = invisPanels.miniGame1;
+			
+		setJPanelWithBackground(room.getPicture());
+		 panel.add(room.getRoomPanel(), BorderLayout.NORTH);
+		 
+	 }
+	
+}

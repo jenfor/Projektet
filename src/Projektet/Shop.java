@@ -1,5 +1,5 @@
 package Projektet;
 
-public class Shop {
+public class Shop extends Room{
 
 }

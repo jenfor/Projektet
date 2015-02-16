@@ -1,5 +1,5 @@
 package Projektet;
 
-public class Center {
+public class Center extends Room{
 
 }

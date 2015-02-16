@@ -1,5 +1,5 @@
 package Projektet;
 
-public class Garden {
+public class Garden extends Room {
 
 }
